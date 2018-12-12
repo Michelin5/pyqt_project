@@ -1,5 +1,7 @@
 # Подключаю все необходимые библиотеки
-
+import sys
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
+from PyQt5.QtWidgets import QLCDNumber, QLabel, QLineEdit
 import requests
 from pprint import pprint
 
