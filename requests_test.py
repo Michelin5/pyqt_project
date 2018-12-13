@@ -22,3 +22,24 @@ vlazhnost = str(data['main']['humidity']) + ' %'  # влажность
 davlenie = str(data['main']['pressure'] / (4 / 3)) + ' мм.рт.ст.'  # давление
 tempmax = str(data['main']['temp_max']) + ' °С'  # максимальная температура
 tempmin = str(data['main']['temp_min']) + ' °С'  # минимальная температура
+
+
+class Example(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        self.setGeometry(300, 300, 500, 500)
+        self.setWindowTitle('Погода')
+
+        self.btn = QPushButton('Показать погоду', self)
+        self.btn.move(185, 350)
+        self.btn.resize(120, 50)
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = Example()
+    ex.show()
+    sys.exit(app.exec())
