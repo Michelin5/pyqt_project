@@ -23,6 +23,7 @@ davlenie = str(data['main']['pressure'] / (4 / 3)) + ' мм.рт.ст.'  # да�
 tempmax = str(data['main']['temp_max']) + ' °С'  # максимальная температура
 tempmin = str(data['main']['temp_min']) + ' °С'  # минимальная температура
 
+
 class Example(QWidget):
     def __init__(self):
         super().__init__()
