@@ -33,9 +33,11 @@ class Example(QWidget):
         self.initUI()
 
     def initUI(self):
-        color = 'blue'
-        startlabel = 'Введите город'
+        color = 'blue'  # Задаю изначальный цвет каждого параметра
+        startlabel = 'Введите город'  # Задаю изначальную надпись каждого параметра
         x, y = 100, 13
+
+        # Далее я создаю виджеты
 
         self.setGeometry(300, 300, 500, 500)
         self.setWindowTitle('Погода')
