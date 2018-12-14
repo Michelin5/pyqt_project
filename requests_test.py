@@ -2,26 +2,29 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
 from PyQt5.QtWidgets import QLCDNumber, QLabel, QLineEdit
+from PyQt5 import QtGui, QtCore
 import requests
 from pprint import pprint
 
 app_id = '07fd9e87806a3b778c76e0a21639f307'  # это специальный ключ, который вадают при регистрации на сайте
+
+
 # openweathermap, который нужен для получения данных о погоде с сайта
 
-city = input()
+# city = input()
 
-url = 'https://api.openweathermap.org/data/2.5/weather?q={}&APPID={}&units=metric'.format(
-    city, app_id)
+# url = 'https://api.openweathermap.org/data/2.5/weather?q={}&APPID={}&units=metric'.format(
+# city, app_id)
 
-data = requests.get(url).json()  # получаем данные с сайта и преобразовываем их в читаемый формат json
+# data1 = requests.get(url1).json()  # получаем данные с сайта и преобразовываем их в читаемый формат json
 
 # Записываем в переменные данные о погоде
 
-temp = str(data['main']['temp']) + ' °С'  # актуальная температура
-vlazhnost = str(data['main']['humidity']) + ' %'  # влажность
-davlenie = str(data['main']['pressure'] / (4 / 3)) + ' мм.рт.ст.'  # давление
-tempmax = str(data['main']['temp_max']) + ' °С'  # максимальная температура
-tempmin = str(data['main']['temp_min']) + ' °С'  # минимальная температура
+# temp = str(data['main']['temp']) + ' °С'  # актуальная температура
+# vlazhnost = str(data['main']['humidity']) + ' %'  # влажность
+# davlenie = str(data['main']['pressure'] / (4 / 3)) + ' мм.рт.ст.'  # давление
+# tempmax = str(data['main']['temp_max']) + ' °С'  # максимальная температура
+# tempmin = str(data['main']['temp_min']) + ' °С'  # минимальная температура
 
 
 class Example(QWidget):
@@ -30,12 +33,132 @@ class Example(QWidget):
         self.initUI()
 
     def initUI(self):
+        color = 'blue'
+        startlabel = 'Введите город'
+        x, y = 100, 13
+
         self.setGeometry(300, 300, 500, 500)
         self.setWindowTitle('Погода')
 
         self.btn = QPushButton('Показать погоду', self)
         self.btn.move(185, 350)
         self.btn.resize(120, 50)
+        self.btn.clicked.connect(self.weather)
+
+        self.city_input = QLineEdit(self)
+        self.city_input.move(190, 50)
+        self.city_input.resize(100, 30)
+
+        self.label = QLabel(self)
+        self.label.setText("Введите название города на английском:")
+        self.label.move(135, 25)
+
+        self.label_temp = QLabel(self)
+        self.label_temp.setText("Температура:")
+        self.label_temp.move(30, 120)
+
+        self.temp = QLabel(self)
+        self.temp.move(110, 120)
+        self.temp.resize(x, y)
+        self.temp.setText(startlabel)
+        palet = self.temp.palette()
+        palet.setColor(QtGui.QPalette.WindowText, QtGui.QColor(color))
+        self.temp.setPalette(palet)
+
+        self.label_humidity = QLabel(self)
+        self.label_humidity.setText("Влажность:")
+        self.label_humidity.move(30, 160)
+
+        self.humidity = QLabel(self)
+        self.humidity.move(110, 160)
+        self.humidity.setText(startlabel)
+        self.humidity.resize(x, y)
+        palet = self.humidity.palette()
+        palet.setColor(QtGui.QPalette.WindowText, QtGui.QColor(color))
+        self.humidity.setPalette(palet)
+
+        self.label_pressure = QLabel(self)
+        self.label_pressure.setText('Давление:')
+        self.label_pressure.move(30, 200)
+
+        self.pressure = QLabel(self)
+        self.pressure.move(110, 200)
+        self.pressure.setText(startlabel)
+        self.pressure.resize(x, y)
+        palet = self.pressure.palette()
+        palet.setColor(QtGui.QPalette.WindowText, QtGui.QColor(color))
+        self.pressure.setPalette(palet)
+
+        self.label_tempmin = QLabel(self)
+        self.label_tempmin.setText('Мин. темп:')
+        self.label_tempmin.move(30, 240)
+
+        self.tempmin = QLabel(self)
+        self.tempmin.move(110, 240)
+        self.tempmin.setText(startlabel)
+        self.tempmin.resize(x, y)
+        palet = self.tempmin.palette()
+        palet.setColor(QtGui.QPalette.WindowText, QtGui.QColor(color))
+        self.tempmin.setPalette(palet)
+
+        self.label_tempmax = QLabel(self)
+        self.label_tempmax.setText('Макс. темп:')
+        self.label_tempmax.move(30, 280)
+
+        self.tempmax = QLabel(self)
+        self.tempmax.move(110, 280)
+        self.tempmax.setText(startlabel)
+        self.tempmax.resize(x, y)
+        palet = self.tempmax.palette()
+        palet.setColor(QtGui.QPalette.WindowText, QtGui.QColor(color))
+        self.tempmax.setPalette(palet)
+
+        self.label_error = QLabel(self)
+        self.label_error.setText('Статус ошибок:')
+        self.label_error.move(280, 120)
+
+        self.error = QLabel(self)
+        self.error.setText('Ошибок не обнаружено.')
+        self.error.move(370, 120)
+        paleterror = self.error.palette()
+        paleterror.setColor(QtGui.QPalette.WindowText, QtGui.QColor('green'))
+        self.error.setPalette(paleterror)
+
+    def weather(self):
+        try:
+            city = self.city_input.text()
+            url = 'https://api.openweathermap.org/data/2.5/weather?q={}&APPID={}&units=metric'.format(
+                city, app_id)
+            data = requests.get(url).json()
+            temp = str(data['main']['temp']) + ' °С'  # актуальная температура
+            vlazhnost = str(data['main']['humidity']) + ' %'  # влажность
+            davlenie = str(data['main']['pressure'] / (4 / 3)) + ' мм.рт.ст.'  # давление
+            tempmax = str(data['main']['temp_max']) + ' °С'  # максимальная температура
+            tempmin = str(data['main']['temp_min']) + ' °С'  # минимальная температура
+            wind = str(data['wind']['speed']) + ' м/с'
+            self.temp.setText(temp)
+            self.humidity.setText(vlazhnost)
+            self.pressure.setText(davlenie)
+            self.tempmin.setText(tempmin)
+            self.tempmax.setText(tempmax)
+            paleterror = self.error.palette()
+            paleterror.setColor(QtGui.QPalette.WindowText, QtGui.QColor('green'))
+            self.error.setPalette(paleterror)
+            self.error.setText('Ошибок не обнаружено.')
+
+
+        except Exception:
+            errorcolor = 'red'
+            errorlabel = "Город не найден"
+            self.error.setText('Проверьте город.')
+            paleterror = self.error.palette()
+            paleterror.setColor(QtGui.QPalette.WindowText, QtGui.QColor(errorcolor))
+            self.error.setPalette(paleterror)
+            self.temp.setText(errorlabel)
+            self.humidity.setText(errorlabel)
+            self.pressure.setText(errorlabel)
+            self.tempmin.setText(errorlabel)
+            self.tempmax.setText(errorlabel)
 
 
 if __name__ == '__main__':
