@@ -1,7 +1,6 @@
 # Подключаю все необходимые библиотеки
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
-from PyQt5.QtWidgets import QLCDNumber, QLabel, QLineEdit
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLCDNumber, QLabel, QLineEdit
 from PyQt5 import QtGui, QtCore
 import requests
 from pprint import pprint
@@ -34,19 +33,30 @@ class Example(QWidget):
         self.initUI()
 
     def initUI(self):
+        color = 'blue'  # Задаю изначальный цвет каждого параметра
+        startlabel = 'Введите город'  # Задаю изначальную надпись каждого параметра
+        x, y = 100, 13
 
-        # Задаю цвет фона
+        # Задаю фон
 
         self.setAutoFillBackground(True)
         p = self.palette()
         p.setColor(self.backgroundRole(), Qt.lightGray)
         self.setPalette(p)
 
-        color = 'blue'  # Задаю изначальный цвет каждого параметра
-        startlabel = 'Введите город'  # Задаю изначальную надпись каждого параметра
-        x, y = 100, 13
-
         # Далее я создаю виджеты
+
+        self.label_theme = QLabel(self)
+        self.label_theme.setText('Выберите тему:')
+        self.label_theme.move(400, 210)
+
+        self.buttongray = QPushButton('Серая', self)
+        self.buttongray.move(400, 235)
+        self.buttongray.clicked.connect(self.changetheme)
+
+        self.buttongreen = QPushButton('Белая', self)
+        self.buttongreen.move(400, 270)
+        self.buttongreen.clicked.connect(self.changetheme)
 
         self.setGeometry(300, 300, 500, 500)
         self.setWindowTitle('Погода')
@@ -137,6 +147,18 @@ class Example(QWidget):
         paleterror = self.error.palette()
         paleterror.setColor(QtGui.QPalette.WindowText, QtGui.QColor('green'))
         self.error.setPalette(paleterror)
+
+    def changetheme(self):
+        if self.sender().text() == 'Серая':
+            self.setAutoFillBackground(True)
+            p = self.palette()
+            p.setColor(self.backgroundRole(), Qt.lightGray)
+            self.setPalette(p)
+        elif self.sender().text() == 'Белая':
+            self.setAutoFillBackground(True)
+            p = self.palette()
+            p.setColor(self.backgroundRole(), Qt.white)
+            self.setPalette(p)
 
     def weather(self):
         try:
