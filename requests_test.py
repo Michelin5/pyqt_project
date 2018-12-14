@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QLCDNumber, QLabel, QLineEdit
 from PyQt5 import QtGui, QtCore
 import requests
 from pprint import pprint
+from PyQt5.QtCore import Qt
 
 app_id = '07fd9e87806a3b778c76e0a21639f307'  # это специальный ключ, который вадают при регистрации на сайте
 
@@ -33,6 +34,14 @@ class Example(QWidget):
         self.initUI()
 
     def initUI(self):
+
+        # Задаю цвет фона
+
+        self.setAutoFillBackground(True)
+        p = self.palette()
+        p.setColor(self.backgroundRole(), Qt.lightGray)
+        self.setPalette(p)
+
         color = 'blue'  # Задаю изначальный цвет каждого параметра
         startlabel = 'Введите город'  # Задаю изначальную надпись каждого параметра
         x, y = 100, 13
@@ -46,6 +55,9 @@ class Example(QWidget):
         self.btn.move(185, 350)
         self.btn.resize(120, 50)
         self.btn.clicked.connect(self.weather)
+
+        self.btn.setStyleSheet('QPushButton:hover { background-color: lightGray }'
+                               'QPushButton:!hover { background-color: white }')
 
         self.city_input = QLineEdit(self)
         self.city_input.move(190, 50)
