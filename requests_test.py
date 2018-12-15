@@ -208,6 +208,7 @@ class Example(QWidget):
 
     def writetofile(self):
         spisoktocopy = []
+        spisoktocopy.append(self.city_input.text())
         spisoktocopy.append(self.label_temp.text() + ' ' + self.temp.text())
         spisoktocopy.append(self.label_humidity.text() + ' ' + self.humidity.text())
         spisoktocopy.append(self.label_pressure.text() + ' ' + self.pressure.text())
