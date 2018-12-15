@@ -1,6 +1,6 @@
 # Подключаю все необходимые библиотеки
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLCDNumber, QLabel, QLineEdit
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLCDNumber, QLabel, QLineEdit, QHBoxLayout, QVBoxLayout
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtGui import QPixmap
 import requests
@@ -35,6 +35,7 @@ class Example(QWidget):
         self.initUI()
 
     def initUI(self):
+        slovar = {}
         # p = requests.get(<url картинки>)
         # a = p.content
 
@@ -77,6 +78,13 @@ class Example(QWidget):
         self.btn.move(185, 380)
         self.btn.resize(120, 50)
         self.btn.clicked.connect(self.weather)
+
+        self.buttonforcopy = QPushButton('Записать данные в файл', self)
+        self.buttonforcopy.move(360, 150)
+        self.buttonforcopy.clicked.connect(self.writetofile)
+
+        self.buttonforcopy.setStyleSheet('QPushButton:hover { background-color: lightGray }'
+                                         'QPushButton:!hover { background-color: white }')
 
         self.btn.setStyleSheet('QPushButton:hover { background-color: lightGray }'
                                'QPushButton:!hover { background-color: white }')
@@ -170,7 +178,6 @@ class Example(QWidget):
         palet.setColor(QtGui.QPalette.WindowText, QtGui.QColor(color))
         self.wind.setPalette(palet)
 
-
         self.label_error = QLabel(self)
         self.label_error.setText('Статус ошибок:')
         self.label_error.move(280, 120)
@@ -199,6 +206,20 @@ class Example(QWidget):
             p.setColor(self.backgroundRole(), Qt.cyan)
             self.setPalette(p)
 
+    def writetofile(self):
+        spisoktocopy = []
+        spisoktocopy.append(self.label_temp.text() + ' ' + self.temp.text())
+        spisoktocopy.append(self.label_humidity.text() + ' ' + self.humidity.text())
+        spisoktocopy.append(self.label_pressure.text() + ' ' + self.pressure.text())
+        spisoktocopy.append(self.label_tempmin.text() + ' ' + self.tempmin.text())
+        spisoktocopy.append(self.label_tempmax.text() + ' ' + self.tempmax.text())
+        spisoktocopy.append(self.label_humidity.text() + ' ' + self.humidity.text())
+        spisoktocopy.append(self.wind_label.text() + ' ' + self.wind.text())
+        file = open('weatherdata.txt', 'wt', encoding='utf-8')
+        for x in spisoktocopy:
+            file.write(x + '\n')
+        file.close()
+
     def weather(self):
         try:
             city = self.city_input.text()
@@ -206,7 +227,7 @@ class Example(QWidget):
                 city, app_id)
             data = requests.get(url).json()
             temp = str(data['main']['temp']) + ' °С'  # актуальная температура
-            #pprint(data)
+            # pprint(data)
             vlazhnost = str(data['main']['humidity']) + ' %'  # влажность
             davlenie = str(data['main']['pressure'] / (4 / 3)) + ' мм.рт.ст.'  # давление
             tempmax = str(data['main']['temp_max']) + ' °С'  # максимальная температура
@@ -221,7 +242,7 @@ class Example(QWidget):
             paleterror = self.error.palette()
             paleterror.setColor(QtGui.QPalette.WindowText, QtGui.QColor('green'))
             self.error.setPalette(paleterror)
-            self.error.setText('Ошибок не обнаружено.')
+            self.error.setText('Ошибки не обнаружено.')
 
 
         except Exception:
