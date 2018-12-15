@@ -56,10 +56,10 @@ class Example(QWidget):
 
         self.label_theme = QLabel(self)
         self.label_theme.setText('Выберите тему:')
-        self.label_theme.move(400, 210)
+        self.label_theme.move(400, 200)
 
         self.buttongray = QPushButton('Серая', self)
-        self.buttongray.move(400, 235)
+        self.buttongray.move(400, 230)
         self.buttongray.clicked.connect(self.changetheme)
 
         self.buttonwhite = QPushButton('Белая', self)
@@ -67,14 +67,14 @@ class Example(QWidget):
         self.buttonwhite.clicked.connect(self.changetheme)
 
         self.buttonblue = QPushButton('Голубая', self)
-        self.buttonblue.move(400, 305)
+        self.buttonblue.move(400, 310)
         self.buttonblue.clicked.connect(self.changetheme)
 
         self.setGeometry(300, 300, 500, 500)
         self.setWindowTitle('Погода')
 
         self.btn = QPushButton('Показать погоду', self)
-        self.btn.move(185, 350)
+        self.btn.move(185, 380)
         self.btn.resize(120, 50)
         self.btn.clicked.connect(self.weather)
 
@@ -158,6 +158,19 @@ class Example(QWidget):
         palet.setColor(QtGui.QPalette.WindowText, QtGui.QColor(color))
         self.tempmax.setPalette(palet)
 
+        self.wind_label = QLabel(self)
+        self.wind_label.setText('Ветер:')
+        self.wind_label.move(30, 320)
+
+        self.wind = QLabel(self)
+        self.wind.move(110, 320)
+        self.wind.setText(startlabel)
+        self.wind.resize(x, y)
+        palet = self.wind.palette()
+        palet.setColor(QtGui.QPalette.WindowText, QtGui.QColor(color))
+        self.wind.setPalette(palet)
+
+
         self.label_error = QLabel(self)
         self.label_error.setText('Статус ошибок:')
         self.label_error.move(280, 120)
@@ -193,6 +206,7 @@ class Example(QWidget):
                 city, app_id)
             data = requests.get(url).json()
             temp = str(data['main']['temp']) + ' °С'  # актуальная температура
+            #pprint(data)
             vlazhnost = str(data['main']['humidity']) + ' %'  # влажность
             davlenie = str(data['main']['pressure'] / (4 / 3)) + ' мм.рт.ст.'  # давление
             tempmax = str(data['main']['temp_max']) + ' °С'  # максимальная температура
@@ -203,6 +217,7 @@ class Example(QWidget):
             self.pressure.setText(davlenie)
             self.tempmin.setText(tempmin)
             self.tempmax.setText(tempmax)
+            self.wind.setText(wind)
             paleterror = self.error.palette()
             paleterror.setColor(QtGui.QPalette.WindowText, QtGui.QColor('green'))
             self.error.setPalette(paleterror)
@@ -221,6 +236,7 @@ class Example(QWidget):
             self.pressure.setText(errorlabel)
             self.tempmin.setText(errorlabel)
             self.tempmax.setText(errorlabel)
+            self.wind.setText(errorlabel)
 
 
 if __name__ == '__main__':
