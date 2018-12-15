@@ -2,9 +2,11 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLCDNumber, QLabel, QLineEdit
 from PyQt5 import QtGui, QtCore
+from PyQt5.QtGui import QPixmap
 import requests
 from pprint import pprint
 from PyQt5.QtCore import Qt
+import requests
 
 app_id = '07fd9e87806a3b778c76e0a21639f307'  # это специальный ключ, который вадают при регистрации на сайте
 
@@ -33,9 +35,15 @@ class Example(QWidget):
         self.initUI()
 
     def initUI(self):
+        # p = requests.get(<url картинки>)
+        # a = p.content
+
         color = 'blue'  # Задаю изначальный цвет каждого параметра
         startlabel = 'Введите город'  # Задаю изначальную надпись каждого параметра
         x, y = 100, 13
+
+        self.imglabel = QLabel(self)
+        self.imglabel.move(250, 200)
 
         # Задаю фон
 
