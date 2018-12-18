@@ -71,6 +71,10 @@ class Example(QWidget):
         self.buttonblue.move(400, 310)
         self.buttonblue.clicked.connect(self.changetheme)
 
+        self.buttonyellow = QPushButton('Желтая', self)
+        self.buttonyellow.move(400, 350)
+        self.buttonyellow.clicked.connect(self.changetheme)
+
         self.setGeometry(300, 300, 500, 500)
         self.setWindowTitle('Погода')
 
@@ -97,6 +101,9 @@ class Example(QWidget):
 
         self.buttonblue.setStyleSheet('QPushButton:hover { background-color: cyan }'
                                       'QPushButton:!hover { background-color: lightGray }')
+
+        self.buttonyellow.setStyleSheet('QPushButton:hover { background-color: yellow }'
+                                        'QPushButton:!hover { background-color: lightGray }')
 
         self.city_input = QLineEdit(self)
         self.city_input.move(190, 50)
@@ -205,6 +212,11 @@ class Example(QWidget):
             p = self.palette()
             p.setColor(self.backgroundRole(), Qt.cyan)
             self.setPalette(p)
+        elif self.sender().text() == 'Желтая':
+            self.setAutoFillBackground(True)
+            p = self.palette()
+            p.setColor(self.backgroundRole(), Qt.darkYellow)
+            self.setPalette(p)
 
     def writetofile(self):
         spisoktocopy = []
@@ -244,7 +256,6 @@ class Example(QWidget):
             paleterror.setColor(QtGui.QPalette.WindowText, QtGui.QColor('green'))
             self.error.setPalette(paleterror)
             self.error.setText('Ошибки не обнаружено.')
-
 
         except Exception:
             errorcolor = 'red'
