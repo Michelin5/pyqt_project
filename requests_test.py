@@ -1,8 +1,8 @@
 # Подключаю все необходимые библиотеки
 import datetime
-#timestamp = 1545152400
-#value = datetime.datetime.fromtimestamp(timestamp)
-#print(value.strftime('%Y-%m-%d %H:%M:%S'))
+# timestamp = 1545152400
+# value = datetime.datetime.fromtimestamp(timestamp)
+# print(value.strftime('%Y-%m-%d %H:%M:%S'))
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLCDNumber, QLabel, QLineEdit, QHBoxLayout, QVBoxLayout
 from PyQt5 import QtGui, QtCore
@@ -13,6 +13,8 @@ from PyQt5.QtCore import Qt
 import requests
 
 app_id = '07fd9e87806a3b778c76e0a21639f307'  # это специальный ключ, который вадают при регистрации на сайте
+
+
 # openweathermap, который нужен для получения данных о погоде с сайта
 
 # city = input()
@@ -117,7 +119,11 @@ class Example(QWidget):
 
         self.time = QLabel(self)
         self.time.move(370, 95)
-        self.time.setText('дата')
+        self.time.setText('гггг-мм-дд чч:мм:сс')
+        self.time.resize(110, y)
+        palet = self.time.palette()
+        palet.setColor(QtGui.QPalette.WindowText, QtGui.QColor('green'))
+        self.time.setPalette(palet)
 
         self.label = QLabel(self)
         self.label.setText("Введите название города на английском:")
@@ -258,14 +264,15 @@ class Example(QWidget):
             wind = str(data['wind']['speed']) + ' м/с'
             unixtimestamp = (data['dt'])
             gmttime = datetime.datetime.fromtimestamp(unixtimestamp)
-            print(gmttime)
-            #pprint(data)
+            # print(gmttime)
+            # pprint(data)
             self.temp.setText(temp)
             self.humidity.setText(vlazhnost)
             self.pressure.setText(davlenie)
             self.tempmin.setText(tempmin)
             self.tempmax.setText(tempmax)
             self.wind.setText(wind)
+            self.time.setText(str(gmttime))
             paleterror = self.error.palette()
             paleterror.setColor(QtGui.QPalette.WindowText, QtGui.QColor('green'))
             self.error.setPalette(paleterror)
@@ -284,6 +291,7 @@ class Example(QWidget):
             self.tempmin.setText(errorlabel)
             self.tempmax.setText(errorlabel)
             self.wind.setText(errorlabel)
+            self.time.setText('гггг-мм-дд чч:мм:сс')
 
 
 if __name__ == '__main__':
