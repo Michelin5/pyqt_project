@@ -1,4 +1,8 @@
 # Подключаю все необходимые библиотеки
+import datetime
+#timestamp = 1545152400
+#value = datetime.datetime.fromtimestamp(timestamp)
+#print(value.strftime('%Y-%m-%d %H:%M:%S'))
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QLCDNumber, QLabel, QLineEdit, QHBoxLayout, QVBoxLayout
 from PyQt5 import QtGui, QtCore
@@ -9,8 +13,6 @@ from PyQt5.QtCore import Qt
 import requests
 
 app_id = '07fd9e87806a3b778c76e0a21639f307'  # это специальный ключ, который вадают при регистрации на сайте
-
-
 # openweathermap, который нужен для получения данных о погоде с сайта
 
 # city = input()
@@ -108,6 +110,14 @@ class Example(QWidget):
         self.city_input = QLineEdit(self)
         self.city_input.move(190, 50)
         self.city_input.resize(100, 30)
+
+        self.timelabel = QLabel(self)
+        self.timelabel.setText("Погода на:")
+        self.timelabel.move(280, 95)
+
+        self.time = QLabel(self)
+        self.time.move(370, 95)
+        self.time.setText('дата')
 
         self.label = QLabel(self)
         self.label.setText("Введите название города на английском:")
@@ -246,6 +256,10 @@ class Example(QWidget):
             tempmax = str(data['main']['temp_max']) + ' °С'  # максимальная температура
             tempmin = str(data['main']['temp_min']) + ' °С'  # минимальная температура
             wind = str(data['wind']['speed']) + ' м/с'
+            unixtimestamp = (data['dt'])
+            gmttime = datetime.datetime.fromtimestamp(unixtimestamp)
+            print(gmttime)
+            #pprint(data)
             self.temp.setText(temp)
             self.humidity.setText(vlazhnost)
             self.pressure.setText(davlenie)
